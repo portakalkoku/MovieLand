@@ -11,11 +11,13 @@ class MovieCollectionViewCell: UICollectionViewCell {
     
     //view implementations
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     
     override func awakeFromNib() {
+        self.layer.cornerRadius = 10 // rectangular border radius
         super.awakeFromNib()
         // Initialization code
     }
 
 }
+
