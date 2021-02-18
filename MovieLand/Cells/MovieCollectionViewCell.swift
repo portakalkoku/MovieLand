@@ -16,9 +16,9 @@ class MovieCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var favoriteStar: UIImageView!
     override func awakeFromNib() {
+      
         self.layer.cornerRadius = 10 // rectangular border radius
         super.awakeFromNib()
-        // Initialization code
     }
 
 }

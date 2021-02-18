@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -34,7 +35,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ttC-O7-myc">
-                                <rect key="frame" x="10" y="10" width="394" height="754"/>
+                                <rect key="frame" x="10" y="61" width="394" height="703"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pJk-78-yqK">
                                     <size key="itemSize" width="38" height="29"/>
@@ -43,7 +44,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="" id="TMr-Tn-PKS" customClass="MovieCollectionViewCell" customModule="MovieLand" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="prototypeCell" id="TMr-Tn-PKS" customClass="MovieCollectionViewCell" customModule="MovieLand" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="38" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="zs7-c7-WMG">
@@ -52,36 +53,31 @@
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="38" height="29"/>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="LmZ-r4-XqI">
-                                        <rect key="frame" x="51" y="0.0" width="38" height="29"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="hfF-zd-qBc">
-                                            <rect key="frame" x="0.0" y="0.0" width="38" height="29"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionViewCellContentView>
-                                    </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="5a8-w3-sCd">
-                                        <rect key="frame" x="101.5" y="0.0" width="38" height="29"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="lUY-tE-6Nh">
-                                            <rect key="frame" x="0.0" y="0.0" width="38" height="29"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionViewCellContentView>
-                                    </collectionViewCell>
                                 </cells>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="Qw3-cJ-ECy"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="bK9-QB-DS6"/>
                                 </connections>
                             </collectionView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="KGj-lP-c35">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Ort-1T-RuI"/>
+                                </connections>
+                            </searchBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ttC-O7-myc" secondAttribute="trailing" constant="10" id="2tt-C0-RKp"/>
-                            <constraint firstItem="ttC-O7-myc" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="4hh-3P-W2C"/>
+                            <constraint firstItem="ttC-O7-myc" firstAttribute="top" secondItem="KGj-lP-c35" secondAttribute="bottom" constant="5" id="08u-ep-nWW"/>
+                            <constraint firstItem="ttC-O7-myc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="16L-ff-WNf"/>
+                            <constraint firstItem="KGj-lP-c35" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="2fk-dR-GXR"/>
+                            <constraint firstItem="KGj-lP-c35" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="BSr-Td-nTT"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ttC-O7-myc" secondAttribute="trailing" constant="10" id="EOY-Zy-mK8"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ttC-O7-myc" secondAttribute="bottom" constant="10" id="hfy-h1-9x5"/>
                             <constraint firstItem="ttC-O7-myc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="hr2-pa-OpE"/>
+                            <constraint firstItem="KGj-lP-c35" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="uVU-HL-snj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Movies" id="kw0-aV-zaZ"/>
@@ -117,7 +113,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1j-4h-Pr2">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1j-4h-Pr2">
                                 <rect key="frame" x="10" y="454.5" width="394" height="30"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="25"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -141,8 +137,16 @@
                             <constraint firstItem="NpN-GR-Ev8" firstAttribute="trailing" secondItem="8tJ-9J-LrO" secondAttribute="trailing" id="tsG-Mo-qvm"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Details" id="YuJ-gL-ugO"/>
+                    <navigationItem key="navigationItem" title="Details" id="YuJ-gL-ugO">
+                        <barButtonItem key="rightBarButtonItem" width="60" id="1Dd-Z6-LgM">
+                            <imageReference key="image" image="star" catalog="system" symbolScale="large" renderingMode="template"/>
+                            <connections>
+                                <action selector="changeFavoriteStatus:" destination="2wc-A0-NvN" id="ivj-m9-bFf"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="favoriteButton" destination="1Dd-Z6-LgM" id="Yd1-vF-IvT"/>
                         <outlet property="headerLabel" destination="C1j-4h-Pr2" id="JnA-n9-WoJ"/>
                         <outlet property="moviePosterImageView" destination="8tJ-9J-LrO" id="T8q-q1-xCN"/>
                         <outlet property="overviewTextView" destination="DKb-RC-avb" id="ThE-X7-ugV"/>
@@ -154,6 +158,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="star" catalog="system" width="128" height="116"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

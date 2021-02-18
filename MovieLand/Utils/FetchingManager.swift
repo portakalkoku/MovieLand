@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-typealias FetchingResponse = ([Movie],Bool,String) -> Void
+typealias FetchingResponse = (Bool,String) -> Void
 typealias ImageResponse = (UIImage?) -> Void
 class FetchingManager {
     
@@ -17,11 +17,8 @@ class FetchingManager {
     let unknownErrorStr = "Unknown error has occured"
     
     
-    //page will be added
-    func fetchMovies(_ completion:@escaping FetchingResponse) {
-        guard let url = URL(string: "https://api.themoviedb.org/3/movie/popular?language=en-US&api_key=\(API_KEY)&page=1") else {
-            //Buraya kendi exceptionımız yazılabilir.
-            return
+    func fetchMovies(_ completion:@escaping FetchingResponse,_ page:Int =  1) {
+        guard let url = URL(string: "https://api.themoviedb.org/3/movie/popular?language=en-US&api_key=\(API_KEY)&page=\(page)") else {            return
         }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -31,17 +28,18 @@ class FetchingManager {
                 //refactor it. it might be useful for all requessts
                 do {
                     guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
-                        completion([],false,"Unknown error has occured")
+                        completion(false,"Unknown error has occured")
                         return
                     }
                     if let failureMessage = json["status_message"] {
-                        completion([],false,failureMessage as! String)
+                        completion(false,failureMessage as! String)
                     }else {
-                        completion(self.fillMovieList(json),true,"")
+                        self.fillMovieList(json)
+                        completion(true,"")
                     }
                 
                 }catch {
-                    completion([],false,"Unknown error has occured")
+                    completion(false,"Unknown error has occured")
                 }
             }
         
@@ -50,36 +48,33 @@ class FetchingManager {
     }
     
     func fetchPoster(_ posterPath:String?,_ completion:@escaping ImageResponse,withSize size:Int = 200) {
+        
+        //Function fetches poster with desired width. Default value is 200.
+        
         guard let posterPath = posterPath else {
             //posterPath doesnt found so no need to continue to download process
             return
         }
-        print(posterPath)
-        let catPictureURL =  URL(string: "https://image.tmdb.org/t/p/w\(size)\(posterPath)")!
-print(catPictureURL)        // Creating a session object with the default configuration.
-        // You can read more about it here https://developer.apple.com/reference/foundation/urlsessionconfiguration
+        let posterUrl =  URL(string: "https://image.tmdb.org/t/p/w\(size)\(posterPath)")!
         let session = URLSession(configuration: .default)
-
-        // Define a download task. The download task will download the contents of the URL as a Data object and then you can do what you wish with that data.
-        let downloadPicTask = session.dataTask(with: catPictureURL) { (data, response, error) in
+        let downloadPicTask = session.dataTask(with: posterUrl) { (data, response, error) in
             // The download has finished.
             if let e = error {
                 print("Error downloading cat picture: \(e)")
             } else {
                 // No errors found.
-                // It would be weird if we didn't have a response, so check for that too.
-                if let res = response as? HTTPURLResponse {
-                    print("Downloaded cat picture with response code \(res.statusCode)")
+                if (response as? HTTPURLResponse) != nil {
                     if let imageData = data {
-                        // Finally convert that Data into an image and do what you wish with it.
+                        //Image was downloaded.
                         let image = UIImage(data: imageData)
                        completion(image)
-                        // Do something with your image.
+                     
                     } else {
-                        print("Couldn't get image: Image is nil")
-                    }
+                        //Image can not be downloaded. So placeholder image will be seen.
+                            completion(nil)                    }
                 } else {
-                    print("Couldn't get response code for some reason")
+                    //Image can not be downloaded. So placeholder image will be seen.
+                    completion(nil)
                 }
             }
         }
@@ -89,18 +84,27 @@ print(catPictureURL)        // Creating a session object with the default config
         
     }
     
+    var movieList:[Movie] = []
     
 
-    func fillMovieList(_ source:[String:Any]) -> [Movie] {
-        var movieList:[Movie] = []
+    /* For pagination, nested loops can be a solution.
+    However it has quadratic time complexity. So, hashmap structure was used.
+    Because hashmaps are O(1) which means linear time */
+    var addedMovies:[Int:Bool] = [:]
+    func fillMovieList(_ source:[String:Any])  {
         
         if let results = source["results"] as? [[String:Any]] {
                 for movieDict in results {
-                    movieList.append(Movie(from: movieDict))
+                    let movie:Movie = Movie(from: movieDict)
+                    if  addedMovies[movie.id] == nil  {
+                        self.movieList.append(Movie(from: movieDict))
+                        addedMovies[movie.id] = true
+
+                    }
                 }
             
         }
-        return movieList
+       
     
     }
     
