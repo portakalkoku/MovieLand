@@ -7,15 +7,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MovieListViewController: UIViewController {
     @IBOutlet weak var movieCollectionView: UICollectionView!
     let itemsPerRow:CGFloat = 2
+	var movieSource:[Movie] = []
+	var selectedMovie:Movie?
 	
-	var nameList:[String] = ["The Lord Of the Rings: The Two Towers","cagri","kursat","nurdan","merve","cagri","kursat","nurdan","merve","cagri","kursat","nurdan","merve","cagri","kursat","nurdan","merve","cagri","kursat","nurdan","merve","cagri","kursat","nurdan","merve","cagri","kursat","nurdan","merve","cagri","kursat","nurdan","merve","cagri","kursat","nurdan"]
-
-    
-    
-    
 	override func viewDidLoad() {
         super.viewDidLoad()
 		let nibCell = UINib(nibName: "MovieCollectionViewCell", bundle: nil)
@@ -23,9 +20,8 @@ class ViewController: UIViewController {
 		FetchingManager.instance.fetchMovies { (movieNameList, success,errorMessage) in
 			if(!success) {
 				CustomAlertDialog.instance.showAlertDialog(self, message: errorMessage)
-	
 			}else {
-				self.nameList = movieNameList
+				self.movieSource = movieNameList
 			}
 		}
 		
@@ -33,10 +29,13 @@ class ViewController: UIViewController {
         
     }
 
+	override func viewDidAppear(_ animated: Bool) {
+		movieCollectionView.reloadData()
+	}
 
 }
 
-extension ViewController: UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+extension MovieListViewController: UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
 
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath)
@@ -49,20 +48,54 @@ extension ViewController: UICollectionViewDelegate,UICollectionViewDataSource,UI
 
     }
 	
+	
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return nameList.count
+        return movieSource.count
     }
-    
+    	
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCollectionViewCell", for: indexPath) as! MovieCollectionViewCell
-        let movieName = nameList[indexPath.row]
+		let movieName = movieSource[indexPath.row].title
         cell.titleLabel.text = movieName
-        cell.imageView.image = UIImage(named:"placeholder")
+		if let image = movieSource[indexPath.row].image {
+			print("doesnt need download again")
+			setCellImage(cell: cell, image: image)
+		}else {
+		FetchingManager.instance.fetchPoster(movieSource[indexPath.row].posterPath) { (image) in
+			guard let image = image else {
+				return
+			}
+			self.movieSource[indexPath.row].setImage(image: image)
+			self.setCellImage(cell: cell, image: image)
+		}
+		}
 
         return cell    }
     
     
-    
+	func setCellImage(cell:MovieCollectionViewCell,image:UIImage) {
+		DispatchQueue.main.async {
+			cell.imageView.image = image
+		}
+		
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		selectedMovie = self.movieSource[indexPath.row]
+		self.performSegue(withIdentifier: "showMovieDetails", sender: self)
+	}
+	
+	
+	//navigation codes
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if(segue.identifier == "showMovieDetails") {
+			if let destViewController = segue.destination as? MovieDetailsViewController {
+				destViewController.movie  = selectedMovie
+			}
+			
+		}
+		
+	}
 
 }
 

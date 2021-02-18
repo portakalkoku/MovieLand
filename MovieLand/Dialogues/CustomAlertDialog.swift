@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 class CustomAlertDialog {
     public static let instance = CustomAlertDialog()
-    func showAlertDialog(_ on:ViewController,message:String){
+    func showAlertDialog(_ on:MovieListViewController,message:String){
         //shows simple alert dialog with given message. It works on the main thread
         DispatchQueue.main.async {
             let alert = UIAlertController(title:"Warning",message: message, preferredStyle: .alert)
