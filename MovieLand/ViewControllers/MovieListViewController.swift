@@ -8,22 +8,23 @@
 import UIKit
 
 class MovieListViewController: UIViewController,UISearchBarDelegate {
-    @IBOutlet weak var movieCollectionView: UICollectionView!
-    let itemsPerRow:CGFloat = 2
+	
+	//MovieViewController is the initial view controller.
+	//It also extended with UISearchbardelegate which gives the oppurtunity to control filtering.
+	@IBOutlet weak var movieCollectionView: UICollectionView!
+	let itemsPerRow:CGFloat = 2
 	var movieSource:[Movie] = []
 	var selectedMovie:Movie?
 	var page = 1
 	let fetching = FetchingManager.instance
 	var searchText = ""
-		
+	
 	override func viewDidLoad() {
-        super.viewDidLoad()
+		super.viewDidLoad()
 		nibRegistrar("LoadMoreCell")
 		nibRegistrar("MovieCollectionViewCell")
 		fetchMovies()
-		
-        
-    }
+	}
 	
 	func nibRegistrar(_ nibName:String) {
 		//CollectionView cells designed as xib file. So they need to ne registered to collectionview.
@@ -31,7 +32,7 @@ class MovieListViewController: UIViewController,UISearchBarDelegate {
 		movieCollectionView.register(cell, forCellWithReuseIdentifier: nibName)
 	}
 	
-	 func filterShownMovies() {
+	func filterShownMovies() {
 		//filters fetched movies in realtime. In FetchingManager movielist has to be filled first.
 		
 		if(searchText != "") {
@@ -46,48 +47,50 @@ class MovieListViewController: UIViewController,UISearchBarDelegate {
 	}
 	
 	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+		//searchText is assigned to global variable in every change in text.
+		//To use it in other functions in this ViewController.
 		self.searchText = searchText
 		filterShownMovies()
-	
+		
 	}
 	
-
+	
 	override func viewDidAppear(_ animated: Bool) {
 		reloadCollectionView()	}
 	
 	func reloadCollectionView() {
 		DispatchQueue.main.async {
 			self.movieCollectionView.reloadData()
-
+			
 		}
 	}
-
+	
 }
 
 extension MovieListViewController: UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
-
-
+	
+	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath)
-    -> CGSize {
+	-> CGSize {
 		let cellMargin:CGFloat = 10
-        let availableWidth =  UIScreen.main.bounds.width - ((itemsPerRow + 1) * cellMargin)
-           let widthPerItem = availableWidth / itemsPerRow
+		let availableWidth =  UIScreen.main.bounds.width - ((itemsPerRow + 1) * cellMargin)
+		let widthPerItem = availableWidth / itemsPerRow
 		
-		//Normally it is desired to have 2 columns in collectionview. Below function calculates the available width for a cell. Padding values are taken into account.
+		//Normally it is desired to have 2 columns in CollectionView. Below function calculates the available width for a cell. Padding values are taken into account.
 		//Because of Load more button always be added to bottom of the collectionview, the last item gets all the availablewidth.
 		return indexPath.row != movieSource.count ? CGSize(width: widthPerItem, height: 2 * widthPerItem) : CGSize(width:availableWidth,height: 32)
-
-    }
-
+		
+	}
 	
 	
 	
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+	
+	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		//Load more added to bottom of the collectionview.
-        return movieSource.count + 1
-    }
+		return movieSource.count + 1
+	}
 	
-	  func getMovieCell(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> UICollectionViewCell {
+	func getMovieCell(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> UICollectionViewCell {
 		
 		
 		//function returns the moviecell after labeling the title and starting to download image if necessary.
@@ -117,7 +120,7 @@ extension MovieListViewController: UICollectionViewDelegate,UICollectionViewData
 		return cell
 	}
 	
-	 func getLoadMoreCell(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> UICollectionViewCell {
+	func getLoadMoreCell(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> UICollectionViewCell {
 		//returns the loadmore cell.
 		
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadMoreCell", for: indexPath) as! LoadMoreCell
@@ -132,9 +135,9 @@ extension MovieListViewController: UICollectionViewDelegate,UICollectionViewData
 			return getMovieCell(collectionView, indexPath)
 			
 		} }
-
-    
-    
+	
+	
+	
 	func setCellImage(cell:MovieCollectionViewCell,image:UIImage) {
 		//Sets image
 		DispatchQueue.main.async {
@@ -160,8 +163,8 @@ extension MovieListViewController: UICollectionViewDelegate,UICollectionViewData
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		if(indexPath.row != self.movieSource.count) {
-		selectedMovie = self.movieSource[indexPath.row]
-		self.performSegue(withIdentifier: "showMovieDetails", sender: self)
+			selectedMovie = self.movieSource[indexPath.row]
+			self.performSegue(withIdentifier: "showMovieDetails", sender: self)
 		}else {
 			//Because last item is LoadMoreCell.
 			fetchMovies()
@@ -171,7 +174,7 @@ extension MovieListViewController: UICollectionViewDelegate,UICollectionViewData
 	
 	//navigation codes
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-	
+		
 		if(segue.identifier == "showMovieDetails") {
 			if let destViewController = segue.destination as? MovieDetailsViewController {
 				//sets the movie variable in MovieDetailsViewController as selectedMovie.
@@ -181,7 +184,7 @@ extension MovieListViewController: UICollectionViewDelegate,UICollectionViewData
 		}
 		
 	}
-
+	
 }
 
 

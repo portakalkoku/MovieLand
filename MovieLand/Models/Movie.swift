@@ -17,13 +17,13 @@ class Movie {
     var favorite:Bool = false
     
     init(from:[String:Any]) {
-   //Movie initialized with map
-            self.id = from["id"] as? Int
-            self.title = from["title"] as? String
-            self.posterPath = from["poster_path"] as? String
-            self.overview = from["overview"] as? String
-            self.voteCount = from["vote_count"] as? Int
-            self.voteAverage = from["vote_average"] as? Double
+        //Movie initialized with map
+        self.id = from["id"] as? Int
+        self.title = from["title"] as? String
+        self.posterPath = from["poster_path"] as? String
+        self.overview = from["overview"] as? String
+        self.voteCount = from["vote_count"] as? Int
+        self.voteAverage = from["vote_average"] as? Double
         
     }
     func setFavoriteStatus(newStatus:Bool) {

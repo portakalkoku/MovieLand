@@ -15,7 +15,7 @@ class MovieDetailsViewController:UIViewController {
     
     let userDefaults = UserDefaultsManager.instance
     var movie:Movie?
-     
+    
     func fillMovieInformation(_ movie: Movie) {
         
         //Fills all the movie information.
@@ -32,7 +32,7 @@ class MovieDetailsViewController:UIViewController {
         if let movie = movie {
             fillMovieInformation(movie)
         }
-   
+        
         
     }
     @IBAction func changeFavoriteStatus(_ sender: Any) {
@@ -44,18 +44,18 @@ class MovieDetailsViewController:UIViewController {
         movie.favorite = !movie.favorite
         // according to favorite status of movie, movie is added to or removed from UserDefaults via UserDefaultsManager.
         movie.favorite ?
-        userDefaults.addMovieToFavorites(movie.id) : userDefaults.removeFromFavorites(movie.id)
+            userDefaults.addMovieToFavorites(movie.id) : userDefaults.removeFromFavorites(movie.id)
         changeFavoriteStatusOfMovie(fill: movie.favorite)
     }
     
     func changeFavoriteStatusOfMovie(fill:Bool) {
         //Changes the image of the favoriteButton according to favorite statsu of movie.
-            if(fill){
-                self.favoriteButton.image = UIImage(systemName: "star.fill")
-            }else {
-                self.favoriteButton.image = UIImage(systemName: "star")
-            }
+        if(fill){
+            self.favoriteButton.image = UIImage(systemName: "star.fill")
+        }else {
+            self.favoriteButton.image = UIImage(systemName: "star")
+        }
         
-      
+        
     }
 }

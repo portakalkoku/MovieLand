@@ -9,9 +9,9 @@ import Foundation
 
 
 class UserDefaultsManager {
- let defaults = UserDefaults.standard
+    let defaults = UserDefaults.standard
     
-public static let instance = UserDefaultsManager()
+    public static let instance = UserDefaultsManager()
     //For getting rid of the for loop, a dictionary is chosen as a storage structure.
     //O(1) is better. Because dictionaries is constant time while looking up.
     func addMovieToFavorites(_ id:Int) {

@@ -20,18 +20,18 @@ class PopupViews {
         }
     }
     func showLoader(on: UIView) -> UIActivityIndicatorView{
-
-            let spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 60, height:60))
-            spinner.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-            spinner.layer.cornerRadius = 3.0
-            spinner.clipsToBounds = true
-            spinner.hidesWhenStopped = true
-            spinner.color = .white
-            spinner.center = on.center
-            on.addSubview(spinner)
-            spinner.startAnimating()
-            return spinner }
-  
+        
+        let spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 60, height:60))
+        spinner.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        spinner.layer.cornerRadius = 3.0
+        spinner.clipsToBounds = true
+        spinner.hidesWhenStopped = true
+        spinner.color = .white
+        spinner.center = on.center
+        on.addSubview(spinner)
+        spinner.startAnimating()
+        return spinner }
+    
     
 }
 extension UIActivityIndicatorView {

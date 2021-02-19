@@ -12,8 +12,8 @@ typealias FetchingResponse = (Bool,String) -> Void
 typealias ImageResponse = (UIImage?) -> Void
 class FetchingManager {
     
-   public static let instance:FetchingManager = FetchingManager()
-   let API_KEY = "fd2b04342048fa2d5f728561866ad52a"
+    public static let instance:FetchingManager = FetchingManager()
+    let API_KEY = "fd2b04342048fa2d5f728561866ad52a"
     let unknownErrorStr = "Unknown error has occured"
     
     
@@ -37,12 +37,12 @@ class FetchingManager {
                         self.fillMovieList(json)
                         completion(true,"")
                     }
-                
+                    
                 }catch {
                     completion(false,"Unknown error has occured")
                 }
             }
-        
+            
         }
         task.resume()
     }
@@ -67,18 +67,18 @@ class FetchingManager {
                     if let imageData = data {
                         //Image was downloaded.
                         let image = UIImage(data: imageData)
-                       completion(image)
-                     
+                        completion(image)
+                        
                     } else {
                         //Image can not be downloaded. So placeholder image will be seen.
-                            completion(nil)                    }
+                        completion(nil)                    }
                 } else {
                     //Image can not be downloaded. So placeholder image will be seen.
                     completion(nil)
                 }
             }
         }
-
+        
         downloadPicTask.resume()
         
         
@@ -86,26 +86,26 @@ class FetchingManager {
     
     var movieList:[Movie] = []
     
-
+    
     /* For pagination, nested loops can be a solution.
-    However it has quadratic time complexity. So, hashmap structure was used.
-    Because hashmaps are O(1) which means linear time */
+     However it has quadratic time complexity. So, hashmap structure was used.
+     Because hashmaps are O(1) which means linear time */
     var addedMovies:[Int:Bool] = [:]
     func fillMovieList(_ source:[String:Any])  {
-        
+    //addedMovies dictionary is used for the get if the movie is added the movieList before
         if let results = source["results"] as? [[String:Any]] {
-                for movieDict in results {
-                    let movie:Movie = Movie(from: movieDict)
-                    if  addedMovies[movie.id] == nil  {
-                        self.movieList.append(Movie(from: movieDict))
-                        addedMovies[movie.id] = true
-
-                    }
+            for movieDict in results {
+                let movie:Movie = Movie(from: movieDict)
+                if  addedMovies[movie.id] == nil  {
+                    self.movieList.append(Movie(from: movieDict))
+                    addedMovies[movie.id] = true
+                    
                 }
+            }
             
         }
-       
-    
+        
+        
     }
     
 }
