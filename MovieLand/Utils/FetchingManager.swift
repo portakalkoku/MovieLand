@@ -59,8 +59,8 @@ class FetchingManager {
         let session = URLSession(configuration: .default)
         let downloadPicTask = session.dataTask(with: posterUrl) { (data, response, error) in
             // The download has finished.
-            if let e = error {
-                print("Error downloading cat picture: \(e)")
+            if error != nil {
+                completion(nil)
             } else {
                 // No errors found.
                 if (response as? HTTPURLResponse) != nil {

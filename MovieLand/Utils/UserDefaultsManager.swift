@@ -19,7 +19,6 @@ class UserDefaultsManager {
         var favorites = defaults.dictionary(forKey: "movie_land_favorites") ?? [:]
         favorites["\(id)"] = true
         defaults.set(favorites, forKey: "movie_land_favorites")
-        print("added to favorites")
     }
     
     func removeFromFavorites(_ id:Int) {
@@ -27,7 +26,6 @@ class UserDefaultsManager {
         var favorites = defaults.dictionary(forKey: "movie_land_favorites") ?? [:]
         favorites["\(id)"] = false
         defaults.set(favorites, forKey: "movie_land_favorites")
-        print("removed from favorites")
     }
     
     func isMovieAmongFavorites(_ id:Int) -> Bool {
